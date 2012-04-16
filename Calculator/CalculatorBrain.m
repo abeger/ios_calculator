@@ -10,11 +10,13 @@
 
 @interface CalculatorBrain ()
 @property (nonatomic, strong) NSMutableArray *operandStack;
+@property (nonatomic, strong) NSNumber *memory;
 @end
 
 @implementation CalculatorBrain
 
 @synthesize operandStack = _operandStack;
+@synthesize memory = _memory;
 
 // Implement setter in order to lazy instantiate.
 // Because we did this, synthesize won't generate.
@@ -25,20 +27,36 @@
     return _operandStack;
 }
 
+- (NSNumber *)memory {
+    if (_memory == nil) {
+        _memory = [[NSNumber alloc] initWithDouble:0];
+    }
+    return _memory;
+}
+
 - (void) pushOperand:(double)operand {
     [self.operandStack addObject:[NSNumber numberWithDouble:operand]];
+}
+
+/**
+ * Returns and removes the last-entered operand. 
+ * If no operands are available, returns 0
+ */
+- (double) popOperand {
+    double operand = [self peekOperand];
+    [self.operandStack removeLastObject];
+    return operand;
 }
 
 /**
  * Returns the last-entered operand. 
  * If no operands are available, returns 0
  */
-- (double) popOperand {
+- (double) peekOperand {
     NSNumber *operandObject = [self.operandStack lastObject];
     if (!operandObject) {
         return 0;
     }
-    [self.operandStack removeLastObject];
     return [operandObject doubleValue];
 }
 
@@ -85,6 +103,16 @@
     } else if ([@"+/-" isEqualToString:operation]) {
         double operand = [self popOperand];
         result = operand == 0 ? 0 : -1 * operand;
+        
+    } else if ([@"M+" isEqualToString:operation]) {
+        double newVal = self.memory.doubleValue + [self peekOperand];
+        self.memory = [NSNumber numberWithDouble:newVal];
+        result = [self peekOperand];
+    } else if ([@"MR" isEqualToString:operation]) {
+        result = self.memory.doubleValue;
+    } else if ([@"MC" isEqualToString:operation]) {
+        self.memory = [NSNumber numberWithDouble:0];
+        result = [self peekOperand];
     }
     
     
