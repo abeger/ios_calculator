@@ -121,4 +121,8 @@
     return result;
 }
 
+- (double) getMemoryValue {
+    return [self.memory doubleValue];
+}
+
 @end
