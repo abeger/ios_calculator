@@ -13,5 +13,6 @@
 - (void) pushOperand:(double)operand;
 - (double) performOperation:(NSString *)operation;
 - (void) clear;
+- (double) getMemoryValue;
 
 @end

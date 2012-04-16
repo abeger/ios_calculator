@@ -22,6 +22,7 @@
 // synthesize creates getter & setter
 @synthesize display = _display; 
 @synthesize log = _log;
+@synthesize memDisplay = _memDisplay;
 @synthesize userIsEnteringNum = _userIsEnteringNum;
 @synthesize brain = _brain;
 
@@ -90,6 +91,16 @@
     [self executeOperation:operation];
 }
 
+- (IBAction)memoryPressed:(UIButton *)sender {
+    if (self.userIsEnteringNum) {
+        [self enterPressed];
+    }
+    NSString *operation = [sender currentTitle];
+    [self executeOperation:operation];
+    double memoryVal = [self.brain getMemoryValue];
+    self.memDisplay.text = [NSString stringWithFormat:@"%g", memoryVal];
+}
+
 - (void)executeOperation:(NSString *)operation {
     [self logValue:operation];
     
@@ -132,5 +143,6 @@
         self.log.text = [self.log.text substringFromIndex:startIndex];
     }
 }
+
 
 @end
