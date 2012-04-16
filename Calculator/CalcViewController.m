@@ -37,15 +37,13 @@
     NSString *digit = [sender currentTitle];
     //NSLog(@"digit pressed = %@", digit);
     
-//    if (]) {
-        if (self.userIsEnteringNum && ![self isDisplayZero]) {
-            // Append digit to display text
-            self.display.text = [self.display.text stringByAppendingString:digit];
-        } else {
-            self.display.text = digit;
-            self.userIsEnteringNum = YES;
-        }
-//    }
+    if (self.userIsEnteringNum && ![self isDisplayZero]) {
+        // Append digit to display text
+        self.display.text = [self.display.text stringByAppendingString:digit];
+    } else {
+        self.display.text = digit;
+        self.userIsEnteringNum = YES;
+    }
 }
 
 /**
